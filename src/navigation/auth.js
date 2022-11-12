@@ -9,9 +9,21 @@ import Signup from '../screen/Signup';
 
 export default function AuthStackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Signin">
-      <Stack.Screen name="Signin" component={Signin} />
-      <Stack.Screen name="Signup" component={Signup} />
+    <Stack.Navigator initialRouteName="Signup">
+      <Stack.Screen
+        name="Signup"
+        component={Signup}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Signin"
+        component={Signin}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 }

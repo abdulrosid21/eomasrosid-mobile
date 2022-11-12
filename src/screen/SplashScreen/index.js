@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 
 export default function SplashScreen(props) {
-  console.log(props);
+  // console.log(props);
   const token = false;
   useEffect(() => {
     checkToken();
@@ -15,14 +15,40 @@ export default function SplashScreen(props) {
       } else {
         props.navigation.replace('AuthScreen');
       }
-    }, 1000);
+    }, 3000);
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Splash Screen</Text>
+    <View style={styles.mainView}>
+      <View>
+        <Text style={styles.text}>Find Events {'\n'} You Love</Text>
+      </View>
+      <View>
+        <Image
+          style={styles.Image}
+          source={require('../../assets/images/people.png')}
+        />
+      </View>
     </View>
   );
 }
 
-const style = StyleSheet.create({});
+const styles = StyleSheet.create({
+  mainView: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#3366FF',
+  },
+  text: {
+    marginVertical: 20,
+    textAlign: 'center',
+    fontSize: 40,
+    fontFamily: 'poppins',
+    color: 'white',
+  },
+  Image: {
+    width: '100%',
+  },
+});
