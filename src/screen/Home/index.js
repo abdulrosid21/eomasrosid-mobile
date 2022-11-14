@@ -91,7 +91,7 @@ export default function Home(props) {
                 }}>
                 Sights & Sounds Exhibition
               </Text>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={navDetail}>
                 <Image
                   style={{width: 30, height: 30}}
                   source={require('../../assets/images/card-button.png')}

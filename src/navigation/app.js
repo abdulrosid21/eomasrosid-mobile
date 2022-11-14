@@ -44,7 +44,11 @@ export default function AppStackNavigator() {
         component={MenuNavigator}
         options={{headerShown: false}}
       />
-      <Stack.Screen name="Detail" component={Detail} />
+      <Stack.Screen
+        name="Detail"
+        component={Detail}
+        options={{headerShown: false}}
+      />
       {/* ORDER */}
       {/* PAYMENT */}
       {/* EDIT PROFILE */}
