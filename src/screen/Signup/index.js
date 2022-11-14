@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Button,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Button, Text, StyleSheet, SafeAreaView} from 'react-native';
 import {TextInput} from 'react-native-paper';
 
 export default function Signup(props) {
@@ -17,12 +10,7 @@ export default function Signup(props) {
     <View style={styles.mainView}>
       <View style={styles.box}>
         <Text style={styles.title}>Sign Up</Text>
-        <Text style={styles.subtitle}>
-          Already have an account?
-          <TouchableOpacity onPress={signIn}>
-            <Text> Log In</Text>
-          </TouchableOpacity>
-        </Text>
+        <Text style={styles.subtitle}>Already have an account? Login</Text>
         <SafeAreaView style={{padding: 0}}>
           <TextInput style={styles.input} mode="outlined" label="Fullname" />
           <TextInput style={styles.input} mode="outlined" label="Email" />
@@ -32,8 +20,18 @@ export default function Signup(props) {
             label="Password"
             secureTextEntry={true}
           />
-          <View style={{padding: 10}}>
-            <Button title="Log In" />
+          <View
+            style={{
+              padding: 10,
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+            }}>
+            <View>
+              <Button title="Sign Up" />
+            </View>
+            <View>
+              <Button title="Login" onPress={signIn} />
+            </View>
           </View>
         </SafeAreaView>
       </View>

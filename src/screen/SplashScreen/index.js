@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 
 export default function SplashScreen(props) {
   // console.log(props);
-  const token = false;
+  const token = true;
   useEffect(() => {
     checkToken();
   }, []);

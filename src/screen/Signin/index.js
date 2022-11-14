@@ -1,4 +1,8 @@
 import React from 'react';
+
+import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {login} from '../../redux/action/auth';
 import {
   View,
   Button,
@@ -6,27 +10,51 @@ import {
   StyleSheet,
   SafeAreaView,
   Image,
-  TouchableOpacity,
 } from 'react-native';
 import {TextInput} from 'react-native-paper';
 
 export default function Signin(props) {
+  const dispatch = useDispatch();
+  // const [errorAlert, setErrorAlert] = React.useState(false);
+  const [form, setForm] = React.useState({
+    email: '',
+    password: '',
+  });
+  const handleChangeForm = e => {
+    setForm({...form, [e.target.name]: e.target.value});
+  };
+  const handleLogin = async () => {
+    try {
+      const result = await dispatch(login(form));
+      AsyncStorage.setItem('token', result.value.data.data.userId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <View style={styles.mainView}>
       <View style={styles.box}>
         <Text style={styles.title}>Log In</Text>
         <Text style={styles.subtitle}>Hi, Wellcome back to urticket!</Text>
         <SafeAreaView style={{padding: 0}}>
-          <TextInput style={styles.input} mode="outlined" label="Email" />
           <TextInput
+            name="email"
+            style={styles.input}
+            mode="outlined"
+            label="Email"
+            onChange={handleChangeForm}
+          />
+          <TextInput
+            name="password"
             style={styles.input}
             mode="outlined"
             label="Password"
             secureTextEntry={true}
+            onChange={handleChangeForm}
           />
           <Text style={styles.forgot}>Forgot Passsword?</Text>
           <View style={{padding: 10}}>
-            <Button title="Log In" />
+            <Button onPress={handleLogin} title="Log In" />
           </View>
         </SafeAreaView>
         <Text

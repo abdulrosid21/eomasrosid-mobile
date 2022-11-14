@@ -8,15 +8,26 @@ const Drawer = createDrawerNavigator();
 
 import Home from '../screen/Home';
 import Detail from '../screen/Detail';
-
 import Profile from '../screen/Profile';
-
+import Booking from '../screen/Booking';
+import Wishlist from '../screen/Wishlist';
 function MenuNavigator() {
   return (
     // DAFTARKAN MENU YANG NANTINYA AKAN MASUK KE DALAM DRAWER DISINI
     <Drawer.Navigator>
-      <Drawer.Screen name="Home" component={Home} />
+      <Drawer.Screen
+        name="Home"
+        component={Home}
+        options={{headerShown: false}}
+      />
       <Drawer.Screen name="Profile" component={Profile} />
+      <Drawer.Screen name="My Booking" component={Booking} />
+
+      <Drawer.Screen
+        name="My Wishlist"
+        component={Wishlist}
+        options={{headerShown: false}}
+      />
       {/* MY BOOKING */}
       {/* MY WISHLIST */}
     </Drawer.Navigator>
