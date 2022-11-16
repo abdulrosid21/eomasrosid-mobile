@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,11 +6,40 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import HeaderV1 from '../../components/headerV1';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import axios from '../../utils/axios';
 
 export default function Home(props) {
-  const navDetail = () => props.navigation.navigate('Detail');
+  const [userId, setUserId] = useState('');
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // checkStorage();
+    getUserId();
+    getData();
+  }, []);
+
+  const getUserId = async () => {
+    const data = await AsyncStorage.getItem('userId');
+    setUserId(data);
+  };
+
+  const getData = async () => {
+    try {
+      const result = await axios.get('events/?page=&limit=&searchName=&sort=');
+      setData(result.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDetail = id => {
+    props.navigation.navigate('Detail', {eventId: id});
+  };
   return (
     <ScrollView style={styles.container}>
       <HeaderV1 {...props} />
@@ -65,210 +94,47 @@ export default function Home(props) {
           </View>
         </View>
         <ScrollView style={{backgroundColor: 'white'}} horizontal={true}>
-          <View style={{padding: 20}}>
-            <Image
-              style={{borderRadius: 30, height: 250, width: 150}}
-              source={require('../../assets/images/event1.png')}
-            />
-            <View style={{position: 'absolute', bottom: 40, left: 35}}>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 5,
-                  fontFamily: 'poppins',
-                  fontSize: 9,
-                  fontStyle: 'normal',
-                }}>
-                Wed, 15 Nov, 4:00 PM
-              </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 20,
-                  fontFamily: 'poppins',
-                  fontSize: 13,
-                  fontStyle: 'normal',
-                }}>
-                Sights & Sounds Exhibition
-              </Text>
-              <TouchableOpacity onPress={navDetail}>
+          {data.map(item => {
+            return (
+              <View style={{padding: 20}} key={item.eventId}>
                 <Image
-                  style={{width: 30, height: 30}}
-                  source={require('../../assets/images/card-button.png')}
+                  style={{borderRadius: 30, height: 250, width: 150}}
+                  // source={require('../../assets/images/event1.png')}
+                  source={{
+                    uri: `https://res.cloudinary.com/dihnhvb2q/image/upload/v1668526635/${item.image}`,
+                  }}
                 />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{padding: 20}}>
-            <Image
-              style={{borderRadius: 30, height: 250, width: 150}}
-              source={require('../../assets/images/event1.png')}
-            />
-            <View style={{position: 'absolute', bottom: 40, left: 35}}>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 5,
-                  fontFamily: 'poppins',
-                  fontSize: 9,
-                  fontStyle: 'normal',
-                }}>
-                Wed, 15 Nov, 4:00 PM
-              </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 20,
-                  fontFamily: 'poppins',
-                  fontSize: 13,
-                  fontStyle: 'normal',
-                }}>
-                Sights & Sounds Exhibition
-              </Text>
-              <TouchableOpacity>
-                <Image
-                  style={{width: 30, height: 30}}
-                  source={require('../../assets/images/card-button.png')}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{padding: 20}}>
-            <Image
-              style={{borderRadius: 30, height: 250, width: 150}}
-              source={require('../../assets/images/event1.png')}
-            />
-            <View style={{position: 'absolute', bottom: 40, left: 35}}>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 5,
-                  fontFamily: 'poppins',
-                  fontSize: 9,
-                  fontStyle: 'normal',
-                }}>
-                Wed, 15 Nov, 4:00 PM
-              </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 20,
-                  fontFamily: 'poppins',
-                  fontSize: 13,
-                  fontStyle: 'normal',
-                }}>
-                Sights & Sounds Exhibition
-              </Text>
-              <TouchableOpacity>
-                <Image
-                  style={{width: 30, height: 30}}
-                  source={require('../../assets/images/card-button.png')}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{padding: 20}}>
-            <Image
-              style={{borderRadius: 30, height: 250, width: 150}}
-              source={require('../../assets/images/event1.png')}
-            />
-            <View style={{position: 'absolute', bottom: 40, left: 35}}>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 5,
-                  fontFamily: 'poppins',
-                  fontSize: 9,
-                  fontStyle: 'normal',
-                }}>
-                Wed, 15 Nov, 4:00 PM
-              </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 20,
-                  fontFamily: 'poppins',
-                  fontSize: 13,
-                  fontStyle: 'normal',
-                }}>
-                Sights & Sounds Exhibition
-              </Text>
-              <TouchableOpacity>
-                <Image
-                  style={{width: 30, height: 30}}
-                  source={require('../../assets/images/card-button.png')}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{padding: 20}}>
-            <Image
-              style={{borderRadius: 30, height: 250, width: 150}}
-              source={require('../../assets/images/event1.png')}
-            />
-            <View style={{position: 'absolute', bottom: 40, left: 35}}>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 5,
-                  fontFamily: 'poppins',
-                  fontSize: 9,
-                  fontStyle: 'normal',
-                }}>
-                Wed, 15 Nov, 4:00 PM
-              </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 20,
-                  fontFamily: 'poppins',
-                  fontSize: 13,
-                  fontStyle: 'normal',
-                }}>
-                Sights & Sounds Exhibition
-              </Text>
-              <TouchableOpacity>
-                <Image
-                  style={{width: 30, height: 30}}
-                  source={require('../../assets/images/card-button.png')}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{padding: 20}}>
-            <Image
-              style={{borderRadius: 30, height: 250, width: 150}}
-              source={require('../../assets/images/event1.png')}
-            />
-            <View style={{position: 'absolute', bottom: 40, left: 35}}>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 5,
-                  fontFamily: 'poppins',
-                  fontSize: 9,
-                  fontStyle: 'normal',
-                }}>
-                Wed, 15 Nov, 4:00 PM
-              </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  marginBottom: 20,
-                  fontFamily: 'poppins',
-                  fontSize: 13,
-                  fontStyle: 'normal',
-                }}>
-                Sights & Sounds Exhibition
-              </Text>
-              <TouchableOpacity>
-                <Image
-                  style={{width: 30, height: 30}}
-                  source={require('../../assets/images/card-button.png')}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
+                <View style={{position: 'absolute', bottom: 40, left: 35}}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      marginBottom: 5,
+                      fontFamily: 'poppins',
+                      fontSize: 9,
+                      fontStyle: 'normal',
+                    }}>
+                    {item.dateTimeShow}
+                  </Text>
+                  <Text
+                    style={{
+                      color: 'white',
+                      marginBottom: 20,
+                      fontFamily: 'poppins',
+                      fontSize: 13,
+                      fontStyle: 'normal',
+                    }}>
+                    {item.name}
+                  </Text>
+                  <TouchableOpacity onPress={() => handleDetail(item.eventId)}>
+                    <Image
+                      style={{width: 30, height: 30}}
+                      source={require('../../assets/images/card-button.png')}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            );
+          })}
         </ScrollView>
         <View style={{backgroundColor: 'white', padding: 20}}>
           <Text style={{fontFamily: 'poppins', fontSize: 24, color: '#373A42'}}>

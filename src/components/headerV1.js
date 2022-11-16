@@ -6,8 +6,18 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-
+import Icon from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function headerV1(props) {
+  const handleLogout = async () => {
+    try {
+      alert('Logout');
+      await AsyncStorage.clear();
+      props.navigation.replace('AuthScreen', {
+        screen: 'Login',
+      });
+    } catch (error) {}
+  };
   const openDrawer = () => {
     props.navigation.openDrawer();
   };
@@ -20,10 +30,7 @@ export default function headerV1(props) {
             source={require('../assets/images/bread.png')}
           />
         </TouchableOpacity>
-        <Image
-          style={styles.gambar}
-          source={require('../assets/images/chat.png')}
-        />
+        <Icon name="logout" size={25} color="white" onPress={handleLogout} />
       </View>
       <View style={styles.SectionStyle}>
         <Image

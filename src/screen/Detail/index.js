@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,21 +7,43 @@ import {
   TouchableOpacity,
   ScrollView,
   Button,
+  Route,
 } from 'react-native';
-
+import axios from '../../utils/axios';
 import HeaderV2 from '../../components/headerV2';
 export default function Detail(props) {
+  // const {id} = Route.params;
+  // console.log(props.route.params.eventId);
+
+  const id = props.route.params.eventId;
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    getDataId();
+  }, []);
+  const getDataId = async () => {
+    try {
+      const result = await axios.get(`events/${id}`);
+      // console.log(result.data.data);
+      setData(result.data.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(data);
   return (
     <ScrollView>
       <Image
         style={{width: '100%', height: 592, margin: 0}}
-        source={require('../../assets/images/event1.png')}
+        source={{
+          uri: `https://res.cloudinary.com/dihnhvb2q/image/upload/v1668526635/${data.image}`,
+        }}
       />
       <HeaderV2 {...props} />
       <View
         style={{
           position: 'absolute',
-          top: '30%',
+          top: '25%',
           padding: 20,
         }}>
         <Text
@@ -31,7 +53,7 @@ export default function Detail(props) {
             color: 'white',
             letterSpacing: 2,
           }}>
-          Sights & Sounds{'\n'} Exhibition
+          {data.name}
         </Text>
         <View style={{flexDirection: 'row', marginBottom: 10, padding: 5}}>
           <Image source={require('../../assets/images/Star.png')} />
@@ -42,7 +64,7 @@ export default function Detail(props) {
               color: 'white',
               letterSpacing: 1,
             }}>
-            Jakarta, Indonesia
+            {data.location}
           </Text>
         </View>
         <View
@@ -54,7 +76,7 @@ export default function Detail(props) {
           }}>
           <Image source={require('../../assets/images/clock.png')} />
           <Text style={{fontFamily: 'poppins', fontSize: 14, color: 'white'}}>
-            Wed, 15 Nov, 4:00 PM
+            {data.dateTimeShow}
           </Text>
         </View>
         <Text
@@ -88,10 +110,7 @@ export default function Detail(props) {
           }}>
           Event Detail
         </Text>
-        <Text style={{fontFamily: 'poppins'}}>
-          After his controversial art exhibition "Tear and Consume" back in
-          November 2018, in which guests were invited to tear up…
-        </Text>
+        <Text style={{fontFamily: 'poppins'}}>{data.detail}</Text>
         <TouchableOpacity>
           <Text style={{color: 'blue', marginVertical: 10}}> Read More</Text>
         </TouchableOpacity>

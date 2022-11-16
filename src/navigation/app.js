@@ -2,7 +2,6 @@ import React from 'react';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -20,7 +19,12 @@ function MenuNavigator() {
         component={Home}
         options={{headerShown: false}}
       />
-      <Drawer.Screen name="Profile" component={Profile} />
+
+      <Drawer.Screen
+        name="Profile"
+        component={Profile}
+        options={{headerShown: false}}
+      />
       <Drawer.Screen name="My Booking" component={Booking} />
 
       <Drawer.Screen

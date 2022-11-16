@@ -1,10 +1,28 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Button, Text, StyleSheet, SafeAreaView} from 'react-native';
 import {TextInput} from 'react-native-paper';
+import axios from '../../utils/axios';
 
 export default function Signup(props) {
   const signIn = () => {
     props.navigation.navigate('Signin');
+  };
+
+  const [form, setForm] = useState({});
+
+  const handleChangeForm = (value, name) => {
+    setForm({...form, [name]: value});
+  };
+  const handleSignup = async () => {
+    try {
+      // console.log(form);
+      const result = await axios.post('users/register', form);
+      // console.log(result.data.data);
+      alert(result.data.message);
+      props.navigation.navigate('Signin');
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <View style={styles.mainView}>
@@ -12,13 +30,24 @@ export default function Signup(props) {
         <Text style={styles.title}>Sign Up</Text>
         <Text style={styles.subtitle}>Already have an account? Login</Text>
         <SafeAreaView style={{padding: 0}}>
-          <TextInput style={styles.input} mode="outlined" label="Fullname" />
-          <TextInput style={styles.input} mode="outlined" label="Email" />
+          <TextInput
+            style={styles.input}
+            mode="outlined"
+            label="Username"
+            onChangeText={text => handleChangeForm(text, 'username')}
+          />
+          <TextInput
+            style={styles.input}
+            mode="outlined"
+            label="Email"
+            onChangeText={text => handleChangeForm(text, 'email')}
+          />
           <TextInput
             style={styles.input}
             mode="outlined"
             label="Password"
             secureTextEntry={true}
+            onChangeText={text => handleChangeForm(text, 'password')}
           />
           <View
             style={{
@@ -27,7 +56,7 @@ export default function Signup(props) {
               justifyContent: 'space-around',
             }}>
             <View>
-              <Button title="Sign Up" />
+              <Button onPress={handleSignup} title="Sign Up" />
             </View>
             <View>
               <Button title="Login" onPress={signIn} />

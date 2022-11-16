@@ -1,8 +1,7 @@
-import React from 'react';
-
-import {useDispatch} from 'react-redux';
+import React, {useState} from 'react';
+import axios from '../../utils/axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {login} from '../../redux/action/auth';
+
 import {
   View,
   Button,
@@ -14,23 +13,27 @@ import {
 import {TextInput} from 'react-native-paper';
 
 export default function Signin(props) {
-  const dispatch = useDispatch();
-  // const [errorAlert, setErrorAlert] = React.useState(false);
-  const [form, setForm] = React.useState({
-    email: '',
-    password: '',
-  });
-  const handleChangeForm = e => {
-    setForm({...form, [e.target.name]: e.target.value});
-  };
+  const [form, setForm] = useState({});
+
   const handleLogin = async () => {
     try {
-      const result = await dispatch(login(form));
-      AsyncStorage.setItem('token', result.value.data.data.userId);
+      // console.log(form);
+      const result = await axios.post('users/login', form);
+      // console.log(result.data.data);
+      await AsyncStorage.setItem('userId', result.data.data.userId);
+      await AsyncStorage.setItem('token', result.data.data.token);
+      await AsyncStorage.setItem('refreshToken', result.data.data.refreshToken);
+      alert(result.data.message);
+      props.navigation.replace('AppScreen', {screen: 'MenuNavigator'});
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleChangeForm = (value, name) => {
+    setForm({...form, [name]: value});
+  };
+
   return (
     <View style={styles.mainView}>
       <View style={styles.box}>
@@ -38,19 +41,17 @@ export default function Signin(props) {
         <Text style={styles.subtitle}>Hi, Wellcome back to urticket!</Text>
         <SafeAreaView style={{padding: 0}}>
           <TextInput
-            name="email"
             style={styles.input}
             mode="outlined"
             label="Email"
-            onChange={handleChangeForm}
+            onChangeText={text => handleChangeForm(text, 'email')}
           />
           <TextInput
-            name="password"
             style={styles.input}
             mode="outlined"
             label="Password"
             secureTextEntry={true}
-            onChange={handleChangeForm}
+            onChangeText={text => handleChangeForm(text, 'password')}
           />
           <Text style={styles.forgot}>Forgot Passsword?</Text>
           <View style={{padding: 10}}>
